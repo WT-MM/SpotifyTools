@@ -1,4 +1,4 @@
 env
 .cache
 setVars.py
-localdata
+localdata/*
