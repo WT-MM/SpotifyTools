@@ -21,14 +21,17 @@ def favoritesOverDuration(df):
     plt.title("Frequency to Song Length (rounded to 10s of seconds)")
     plt.xlabel("Song length in seconds")
     plt.ylabel("Frequency in Favorites")
+    plt.figtext(0.99, 0, "mean duration: " + str(df.loc[:,'roundedDuration'].mean()), horizontalalignment='right')
     
 def favoritesTenpo(df):
     plt.figure()
-    tempoFreq = (round(df.loc[:,'tempo']/8)*8).value_counts()
+    df['roundedTempo'] = (round(df.loc[:,'tempo']/8)*8)
+    tempoFreq = df.loc[:,'roundedTempo'].value_counts()
     plt.scatter(tempoFreq.keys(),tempoFreq[:])
     plt.title("Frequency to Tempo (divided by 8)")
     plt.xlabel("Tempo")
     plt.ylabel("# of Songs")
+    plt.figtext(0.99, 0.01, "mean tempo: " + str(df.loc[:,'roundedTempo'].mean()), horizontalalignment='right')
     
     
 
