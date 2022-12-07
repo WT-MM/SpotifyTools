@@ -18,35 +18,38 @@ data = [["Artist", "Name", "Date","ID", "danceability", "energy", "key", "loudne
 for i in range(math.ceil(length/100)):
     results = sp.playlist_items(playlist_id, offset=i*100)
     for idx, item in enumerate(results['items']):
-        idx = i*100 + idx
-        track = item['track']
-        trackID = track['id']
-        artist = track['artists'][0]['name']
         try:
-            features = sp.audio_features(trackID)[0]
-        except:
-            print(sys.exc_info()[0])
-            continue
-        
-        #Janky add-in to trim disliked songs data
-        if artist in ["Taylor Swift", "Bruno Mars"]:
-            continue
-        
-        data.append([artist, 
-                     track['name'],
-                     item['added_at'].split("T")[0],
-                     trackID,
-                     features['danceability'],
-                     features['energy'],
-                     features['key'],
-                     features['loudness'],
-                     features['speechiness'],
-                     features['acousticness'],
-                     features['instrumentalness'],
-                     features['liveness'],
-                     features['valence'],
-                     features['tempo'],
-                     features['duration_ms']])
+            idx = i*100 + idx
+            track = item['track']
+            trackID = track['id']
+            artist = track['artists'][0]['name']
+            try:
+                features = sp.audio_features(trackID)[0]
+            except:
+                print(sys.exc_info()[0])
+                continue
+            
+            #Janky add-in to trim disliked songs data
+            if artist in ["Taylor Swift", "Bruno Mars"]:
+                continue
+            
+            data.append([artist, 
+                        track['name'],
+                        item['added_at'].split("T")[0],
+                        trackID,
+                        features['danceability'],
+                        features['energy'],
+                        features['key'],
+                        features['loudness'],
+                        features['speechiness'],
+                        features['acousticness'],
+                        features['instrumentalness'],
+                        features['liveness'],
+                        features['valence'],
+                        features['tempo'],
+                        features['duration_ms']])
+        except Exception as e:
+            print(e)
     print("Pass " + str(i))
 
         
