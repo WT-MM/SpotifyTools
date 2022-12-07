@@ -12,6 +12,8 @@ In Use:
 
     logFavorites.py - pull songs from "Liked Songs" collection and save to 'favorites.csv'
 
+    filteredRecs.py - filter results from spotifyRecs with 'favSVM' and save to playlist
+
 
 
 

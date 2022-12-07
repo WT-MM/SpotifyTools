@@ -16,4 +16,12 @@ def createPlaylist(name, tracks):
     for i in playlists['items']:
         if i['name'] == name:
             playlist=i['id']
-    sp.playlist_add_items(playlist, tracks)
+            break
+    trackChunks = divide_chunks(list(tracks), 100)
+    for i in trackChunks:  
+        sp.playlist_add_items(playlist, i)
+    
+def divide_chunks(l, n):
+    # looping till length l
+    for i in range(0, len(l), n):
+        yield l[i:i + n]
