@@ -11,16 +11,26 @@ X = []
 Y = []
 
 favDF = pd.read_csv('localdata/favorites.csv')
+badDF = pd.read_csv('localdata/longplaylist.csv')
+
+
+#Suboptimal, but pretty irrelevant on small datasets
+for i in list(favDF.loc[:,'ID'].loc[:]):
+    badDF.drop(badDF.loc[badDF['ID']==i].index, inplace=True)
+
+
 favDF.drop('Artist', axis=1, inplace=True)
 favDF.drop('Name', axis=1, inplace=True)
 favDF.drop('Date', axis=1, inplace=True)
 favDF.drop('ID', axis=1, inplace=True)
 
-badDF = pd.read_csv('localdata/longplaylist.csv')
 badDF.drop('Artist', axis=1, inplace=True)
 badDF.drop('Name', axis=1, inplace=True)
 badDF.drop('Date', axis=1, inplace=True)
 badDF.drop('ID', axis=1, inplace=True)
+
+
+pd.merge(badDF,favDF, indicator=True, how='outer').query('_merge=="left_only"').drop('_merge', axis=1)
 
 #To not oversaturate with negative cases
 badDF = badDF[:300]
