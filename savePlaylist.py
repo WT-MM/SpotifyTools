@@ -1,13 +1,8 @@
+import sys
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import math
 import csv
-
-import os
-
-os.environ['SPOTIPY_CLIENT_ID'] = '1d2a39cf5b71423596472455d622fea3'
-os.environ['SPOTIPY_CLIENT_SECRET'] = 'caaaa9882763499899c5704aa801d365'
-os.environ['SPOTIPY_REDIRECT_URI'] = 'http://127.0.0.1:9090'
 
 playlist_id = "5S8SJdl1BDc0ugpkEvFsIL"
 playlist_name = "longplaylist"
@@ -27,7 +22,11 @@ for i in range(math.ceil(length/100)):
         track = item['track']
         trackID = track['id']
         artist = track['artists'][0]['name']
-        features = sp.audio_features(trackID)[0]
+        try:
+            features = sp.audio_features(trackID)[0]
+        except:
+            print(sys.exc_info()[0])
+            continue
         
         #Janky add-in to trim disliked songs data
         if artist in ["Taylor Swift", "Bruno Mars"]:
