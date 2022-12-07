@@ -37,7 +37,7 @@ for i in range(len(badDF.index)):
     
 X_train, X_test, y_train, y_test = train_test_split(X,Y,train_size=0.8, random_state=0)
 
-
+#Probably not the optimal model to use
 def makeSVM():
     clf = svm.SVC(decision_function_shape='ovo', probability=True)
     clf.fit(X_train,y_train)
