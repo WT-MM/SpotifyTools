@@ -11,20 +11,28 @@ X = []
 Y = []
 
 favDF = pd.read_csv('localdata/favorites.csv')
-print(favDF)
 favDF.drop('Artist', axis=1, inplace=True)
 favDF.drop('Name', axis=1, inplace=True)
 favDF.drop('Date', axis=1, inplace=True)
 favDF.drop('ID', axis=1, inplace=True)
 
-#dislikeDF = pd.read_csv('localdata/dislike.csv')
+badDF = pd.read_csv('localdata/longplaylist.csv')
+badDF.drop('Artist', axis=1, inplace=True)
+badDF.drop('Name', axis=1, inplace=True)
+badDF.drop('Date', axis=1, inplace=True)
+badDF.drop('ID', axis=1, inplace=True)
+
+#To not oversaturate with negative cases
+badDF = badDF[:300]
+
 
 #Definitely not using pandas correctly
 for i in range(len(favDF.index)):
     X.append(list(favDF.iloc[i,:]))
     Y.append(1)
-    #Temporary until real data gathered
-    X.append([0,0,0,0,0,0,0,0,0,0,0])
+    
+for i in range(len(badDF.index)):
+    X.append(list(badDF.iloc[i,:]))
     Y.append(0)
     
 X_train, X_test, y_train, y_test = train_test_split(X,Y,train_size=0.8, random_state=0)
@@ -41,12 +49,6 @@ def makeSVM():
     tm.fit(X_train,y_train)
     tacc=tm.score(X_test,y_test)
 
-    correct = []
-    for i in range(len(X_test)):
-        if mm[i] == y_test[i]:
-            correct.append("YES")
-        else:
-            correct.append("NO")
 
     print("Accuracy: " + str(acc))
     print("Other Acc: " + str(tacc))
@@ -55,7 +57,12 @@ def makeSVM():
     #print(correct)
 
     with open('models/favSVM.pkl', 'wb') as f:
-        pickle.dump(clf,f)
+        if acc > tacc: 
+            pickle.dump(clf,f)
+            print("Saving clf")
+        else: 
+            pickle.dump(tm,f)
+            print("Saving tm")
         
         
 makeSVM()

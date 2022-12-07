@@ -2,6 +2,10 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import math
 import csv
+import setVars
+
+setVars.setVars()
+
 
 scope = "user-library-read"
 

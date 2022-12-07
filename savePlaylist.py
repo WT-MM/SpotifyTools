@@ -3,6 +3,9 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import math
 import csv
+import setVars
+
+setVars.setVars()
 
 playlist_id = "5S8SJdl1BDc0ugpkEvFsIL"
 playlist_name = "longplaylist"
